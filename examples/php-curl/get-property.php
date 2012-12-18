@@ -1,31 +1,27 @@
 <?php
 
-//The URI to request
+// Simple curl class
+require_once 'helpers/SimpleCURL.class.php';
+
+// The URI to request
 $uri = 'http://carltonsoftware.apiary.io/property/mousecott_SS';
 
-//Create a new curl connection
-$ch = curl_init();
+// New curl request
+$curl = new SimpleCURL();
 
-// Set the URI that we want to request
-curl_setopt($ch, CURLOPT_URL, $uri);
+// Get a new property object
+$curlResponse = $curl->get($uri);
 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_TIMEOUT, '3');
-
-//Perform the request, and assign the response to $response
-$response = curl_exec($ch);
-
-//Convert the response into a json_objecy
-$property = json_decode($response);
+$property = $curlResponse->response;
 
 ?>
 
-<h1><?= $property->name ?></h1>
+<h1><?php echo $property->name ?></h1>
 <ul>
-    <li><label>Sleeps:</label> <?=$property->accommodates?></li>
-    <li><label>Bedrooms:</label> <?=$property->bedrooms?></li>
-    <li><label>Pets:</label> <?= ($property->pets) ? 'Yes' : 'No' ?></li>
-    <li><label>Price:</label> &pound;<?=$property->brands->SS->pricing->ranges->{date('Y')}->low ?> to &pound;<?=$property->brands->SS->pricing->ranges->{date('Y')}->high ?></li>
+    <li><label>Sleeps:</label> <?php echo $property->accommodates; ?></li>
+    <li><label>Bedrooms:</label> <?php echo $property->bedrooms; ?></li>
+    <li><label>Pets:</label> <?php echo ($property->pets) ? 'Yes' : 'No'; ?></li>
+    <li><label>Price:</label> &pound;<?php echo $property->brands->SS->pricing->ranges->{date('Y')}->low; ?> to &pound;<?php echo $property->brands->SS->pricing->ranges->{date('Y')}->high; ?></li>
 </ul>
 
-<?= $property->brands->SS->description ?>
+<?php echo $property->brands->SS->description; ?>
