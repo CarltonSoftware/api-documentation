@@ -1,8 +1,46 @@
 <?php
 
+/**
+ * HMAC Authenitcation class
+ *
+ * PHP Version 5.3
+ * 
+ * @category  API_Client
+ * @package   Tabs
+ * @author    Carlton Software <support@carltonsoftware.co.uk>
+ * @copyright 2012 Carlton Software
+ * @license   http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link      http://www.carltonsoftware.co.uk
+ */
+
+
+/**
+ * HMAC Authenitcation class.  This class provides static methods
+ * for authentication with the tabs api given a provided username
+ * and key.
+ *
+ * PHP Version 5.3
+ * 
+ * @category  API_Client
+ * @package   Tabs
+ * @author    Carlton Software <support@carltonsoftware.co.uk>
+ * @copyright 2012 Carlton Software
+ * @license   http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link      http://www.carltonsoftware.co.uk
+ */
 class HMAC
 {
-    static function hmacEncode($params, $secret, $key) {
+    /**
+     * Encode function
+     *
+     * @param array  $params Parameters to encode
+     * @param string $secret Secret key
+     * @param string $key    Key
+     *
+     * @return array
+     */
+    static function hmacEncode($params, $secret, $key)
+    {
         $params['APIKEY'] = $key;
         $params['APISECRET'] = $secret;
         ksort($params);
@@ -10,22 +48,37 @@ class HMAC
         $hash = self::hash(json_encode($params));
         $params['hash'] = $hash;
         unset($params['APISECRET']);
-
         return $params;
     }
-
-    static function hmacCheck($params, $secret) {
+    
+    /**
+     * Check function
+     *
+     * @param string $params Parameters to check
+     * @param string $secret Secret key
+     *
+     * @return boolean
+     */
+    static function hmacCheck($params, $secret)
+    {
         $hash = $params['hash'];
         unset($params['hash']);
         $params['APISECRET'] = $secret;
-        asort($params);
+        ksort($params);
+        $params = array_map('strval', $params);
         $_hash = self::hash(json_encode($params));
-
         return ($_hash == $hash);
     }
-
-    static function hash($data) {
+    
+    /**
+     * Hash function
+     *
+     * @param array $data Data
+     *
+     * @return string
+     */
+    static function hash($data)
+    {
         return hash('SHA256', $data, false);
     }
-
 }
