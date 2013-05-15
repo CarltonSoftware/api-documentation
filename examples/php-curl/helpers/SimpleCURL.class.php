@@ -409,26 +409,6 @@ class SimpleCURL
 
         // Set custom header
         curl_setopt($this->resource, CURLOPT_CUSTOMREQUEST, "DELETE");
-
-        // Set the post fields.  Requires the function
-        // http_build_query to encode the parameters
-        curl_setopt(
-            $this->resource, 
-            CURLOPT_POSTFIELDS,
-            is_array($params) ? http_build_query($params) : $params
-        );
-
-        //Set the header
-        curl_setopt(
-            $this->resource, 
-            CURLOPT_HTTPHEADER, 
-            array(
-                'Content-Type: application/x-www-form-urlencoded'
-            )
-        );
-
-        // Set the content type
-        $this->contentType = "application/x-www-form-urlencoded;charset=UTF-8";
     }
 
     /**
@@ -454,18 +434,6 @@ class SimpleCURL
             CURLOPT_POSTFIELDS, 
             http_build_query($params)
         );
-
-        //Set the header
-        curl_setopt(
-            $this->resource, 
-            CURLOPT_HTTPHEADER, 
-            array(
-                'Content-Type: application/x-www-form-urlencoded'
-            )
-        );
-
-        // Set the content type
-        $this->contentType = "application/x-www-form-urlencoded;charset=UTF-8";
     }
 
 
