@@ -3,21 +3,23 @@
 // Simple curl class
 require_once 'helpers/ApiClient.class.php';
 
+$uri = 'http://carltonsoftware.apiary.io/';
+
 //Request data
 $data = array(
-    'propertyRef' => '10DMTH',
-    'brandCode' => 'CD',
-    'fromDate' => '2013-08-24',
-    'toDate' => '2013-08-31',
-    'partySize' => 1,
-    'pets' => 0
+    'propertyRef' => 'mousecott',
+    'brandCode' => 'SS',
+    'fromDate' => '2012-07-01',
+    'toDate' => '2012-07-08',
+    'partySize' => 5,
+    'pets' => 2
 );
 
-$secret = 'a40feeeaa74121af';
-$key = 'a3k98dv7';
+$secret = '';
+$key = '';
 
 $client = new ApiClient(
-    'http://cd.api.carltonsoftware.co.uk',
+    $uri,
     '',
     $key,
     $secret
