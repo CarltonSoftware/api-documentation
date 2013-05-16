@@ -1,16 +1,16 @@
 <?php
 
 // Simple curl class
-require_once 'helpers/SimpleCURL.class.php';
+require_once 'helpers/ApiClient.class.php';
 
 // The URI to request
-$uri = 'http://carltonsoftware.apiary.io/property/mousecott_SS';
+$uri = 'http://carltonsoftware.apiary.io/';
 
 // New curl request
-$curl = new SimpleCURL();
+$client = new ApiClient($uri);
 
 // Get a new property object
-$curlResponse = $curl->get($uri);
+$curlResponse = $client->get('/property/mousecott_SS');
 
 $property = $curlResponse->response;
 

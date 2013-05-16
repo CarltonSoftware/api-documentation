@@ -1,36 +1,36 @@
 <?php
 
 // Simple curl class
-require_once 'helpers/SimpleCURL.class.php';
-
-//The URI to request
-$uri = 'http://carltonsoftware.apiary.io/booking-enquiry';
+require_once 'helpers/ApiClient.class.php';
 
 //Request data
-$data = json_encode(array(
-    'propertyRef' => 'mousecott',
-    'brandCode' => 'SS',
-    'fromDate' => '2012-07-01',
-    'toDate' => '2012-07-08',
-    'partySize' => 5,
-    'pets' => 2
-));
+$data = array(
+    'propertyRef' => '10DMTH',
+    'brandCode' => 'CD',
+    'fromDate' => '2013-08-24',
+    'toDate' => '2013-08-31',
+    'partySize' => 1,
+    'pets' => 0
+);
 
-$curl = new SimpleCURL();
-$curlResponse = $curl->post($uri, array('data' => $data));
+$secret = 'a40feeeaa74121af';
+$key = 'a3k98dv7';
 
-//Convert the response into a json_objecy
-$bookingEnquiry = $curlResponse->response;
+$client = new ApiClient(
+    'http://cd.api.carltonsoftware.co.uk',
+    '',
+    $key,
+    $secret
+);
 
-if (isset($bookingEnquiry->errorCode)) {
-    die(
-        sprintf(
-            '<h2>An error occurred</h2> <strong>Message:</strong> %s<br /> <strong>Code:</strong> %s', 
-            $bookingEnquiry->errorDescription, 
-            $bookingEnquiry->errorCode
-        )
-    );
-}
+$response = $client->post(
+    '/booking-enquiry', 
+    array(
+        'data' => json_encode($data)
+    )
+);
+
+$bookingEnquiry = $response->response;
 
 $extrasPrice = 0;
 foreach ($bookingEnquiry->price->extras as $extra) {
