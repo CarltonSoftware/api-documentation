@@ -18,8 +18,8 @@ $params = array(
 //Instantiate the HMAC helper
 $hmacHelper = new HMAC();
 
+//Encode the params
 $encodedParams = $hmacHelper->hmacEncode($params, $apiKey, $apiSecret);
-
 
 
 //Print the results
