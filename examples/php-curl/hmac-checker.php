@@ -17,7 +17,7 @@ foreach ($requiredParams as $param) {
     }
 }
 
-if ($params['data'] == '') {
+if (isset($params['data']) && $params['data'] == '') {
     unset ($params['data']);
 }
 
