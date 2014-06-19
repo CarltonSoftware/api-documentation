@@ -1,11 +1,14 @@
 <?php
 
-// Simple curl class
-require_once 'helpers/ApiClient.class.php';
+// Load client
+require_once 'helpers/autoload.php';
 
 $uri = 'http://carltonsoftware.apiary.io/';
+$secret = '';
+$key = '';
+$client = \tabs\api\client\ApiClient::factory($uri, $key, $secret);
 
-//Request data
+// Request data
 $data = array(
     'propertyRef' => 'mousecott',
     'brandCode' => 'SS',
@@ -13,16 +16,6 @@ $data = array(
     'toDate' => '2012-07-08',
     'partySize' => 5,
     'pets' => 2
-);
-
-$secret = '';
-$key = '';
-
-$client = new ApiClient(
-    $uri,
-    '',
-    $key,
-    $secret
 );
 
 $response = $client->post(
