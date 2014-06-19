@@ -1,35 +1,43 @@
 <?php
 
-require 'helpers/HMAC.php';
+// Load client
+require_once 'helpers/autoload.php';
 
-$requiredParams = array('APIKEY', 'APISECRET', 'data');
 $generateHash = true;
-$params = array();
-foreach ($requiredParams as $param) {
-    if (in_array($param, array('APIKEY', 'APISECRET'))) {
-        continue;
-    }
-    if (!isset($_POST[$param])) {
-        //die (sprintf('%s is required', $param));
+$params = array(
+    'APIKEY' => '',
+    'APISECRET' => '',
+    'data' => ''
+);
+foreach ($params as $key => $val) {
+    if (filter_input(INPUT_POST, $key) === null 
+        || filter_input(INPUT_POST, $key) == ''
+    ) {
         $generateHash = false;
     } else {
-        $params[$param] = $_POST[$param];
+        $params[$key] = filter_input(INPUT_POST, $key);
     }
 }
 
-if (isset($params['data']) && $params['data'] == '') {
+if ($params['data'] == '' 
+    && $params['APIKEY'] != ''
+    && $params['APISECRET'] != ''
+) {
     unset ($params['data']);
+    $generateHash = true;
 }
-
-
 
 if ($generateHash) {
-    $hmacHelper = new HMAC();
-    $encodedParams = $hmacHelper->hmacEncode($params, $_POST['APISECRET'], $_POST['APIKEY']);
-    printf('<div class="info">Hash: %s</div>', $encodedParams['hash']);
+    $encodedParams = \tabs\api\client\Hmac::hmacEncode(
+        $params,
+        filter_input(INPUT_POST, 'APIKEY'),
+        filter_input(INPUT_POST, 'APISECRET')
+    );
+    printf(
+        '<div class="info">Hash: %s</div>',
+        $encodedParams['hash']
+    );
 }
-
-
 
 ?>
 
@@ -53,19 +61,20 @@ if ($generateHash) {
         <p>You can use this form to test that your own HMAC implementation matches what we are expecting</p>
 
         <form action="" method="POST">
+            
             <div>
                 <label for="APIKEY">API Key</label>
-                <input type="text" name="APIKEY" value="<?php print (isset($_POST['APIKEY']) ? $_POST['APIKEY'] : '');?>">
+                <input type="text" name="APIKEY" value="<?php print filter_input(INPUT_POST, 'APIKEY') ? filter_input(INPUT_POST, 'APIKEY') : ''; ?>">
             </div>
 
             <div>
                 <label for="APISECRET">API Secret</label>
-                <input type="text" name="APISECRET" value="<?php print (isset($_POST['APISECRET']) ? $_POST['APISECRET'] : '');?>">
+                <input type="text" name="APISECRET" value="<?php print filter_input(INPUT_POST, 'APISECRET') ? filter_input(INPUT_POST, 'APISECRET') : ''; ?>">
             </div>
 
             <div>
                 <label for="data">Data (or blank if performing a GET)</label>
-                <textarea name="data" class="input-data"><?php print (isset($_POST['data']) ? $_POST['data'] : '');?></textarea>
+                <textarea name="data" class="input-data"><?php print filter_input(INPUT_POST, 'data') ? filter_input(INPUT_POST, 'data') : ''; ?></textarea>
             </div>
 
             <input type="submit" value="Calculate Hash">
