@@ -10,10 +10,10 @@ try {
         array(
             'data' => json_encode(
                 array(
-                    'propertyRef' => 'A182',
+                    'propertyRef' => 'G262',
                     'brandCode' => 'ZZ',
-                    'fromDate' => '2014-05-03',
-                    'toDate' => '2014-05-10',
+                    'fromDate' => '2014-12-13',
+                    'toDate' => '2014-12-20',
                     'partySize' => 2,
                     'pets' => 0
                 )

@@ -8,7 +8,7 @@ try {
         '/property',
         array(),
         array(
-            'query' => $_GET
+            'query' => getParams()
         )
     )->send();
     
@@ -32,4 +32,28 @@ try {
     echo $ex->getResponse()->getBody();
 } catch (\Exception $ex) {
     echo $ex->getMessage();
+}
+
+/**
+ * Helper function to define the query parameters passed to the property
+ * search endpoint.
+ * 
+ * @return array
+ */
+function getParams()
+{
+    $queryParams = array();
+    $params = filter_input_array(INPUT_GET);
+    if ($params) {
+        foreach (array('page', 'pageSize', 'orderBy', 'fields', 'searchId') as $term) {
+            if (filter_input(INPUT_GET, $term)) {
+                $queryParams[$term] = filter_input(INPUT_GET, $term);
+                unset($params[$term]);
+            }
+        }
+        
+        $queryParams['filter'] = http_build_query($params, null, ':');
+    }
+    
+    return $queryParams;
 }

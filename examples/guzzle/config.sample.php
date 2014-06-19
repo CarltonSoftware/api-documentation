@@ -2,4 +2,4 @@
 
 define('APIKEY', '');
 define('APISECRET', '');
-define('APIURL', '');
+define('APIURL', 'http://carltonsoftware.apiary.io');

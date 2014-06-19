@@ -41,11 +41,17 @@ class HmacPlugin implements Symfony\Component\EventDispatcher\EventSubscriberInt
 
     // -------------------------- Interface Methods ------------------------- //
 
+    /**
+     * @inheritdoc
+     */
     public static function getSubscribedEvents()
     {
         return array('request.before_send' => 'onBeforeSend');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onBeforeSend(Guzzle\Common\Event $event)
     {
         $request = $event['request'];

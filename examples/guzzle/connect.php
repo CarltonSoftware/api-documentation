@@ -11,5 +11,9 @@ use Guzzle\Http\Exception\CurlException;
     
 $plugin = new \HmacPlugin(APIKEY, APISECRET);
 
+if (!defined('APIURL') || strlen(APIURL) == 0) {
+    die('No APIURL constant defined.  You need to set one in config.php.');
+}
+
 $client = new Client(APIURL);
 $client->addSubscriber($plugin);
