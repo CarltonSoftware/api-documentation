@@ -17,7 +17,7 @@ $params = array(
 );
 
 // Encode the params
-$encodedParams = \tabs\api\client\Hmac::hmacEncode($params, $apiKey, $apiSecret);
+$encodedParams = \tabs\api\client\Hmac::hmacEncode($params, $apiSecret, $apiKey);
 
 // Print the results
 printf('<h1>HMAC Example</h1>');
