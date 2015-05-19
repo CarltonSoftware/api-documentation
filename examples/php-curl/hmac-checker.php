@@ -24,14 +24,16 @@ if ($params['data'] == ''
     && $params['APISECRET'] != ''
 ) {
     unset ($params['data']);
+    unset ($params['APIKEY']);
+    unset ($params['APISECRET']);
     $generateHash = true;
 }
 
 if ($generateHash) {
     $encodedParams = \tabs\api\client\Hmac::hmacEncode(
         $params,
-        filter_input(INPUT_POST, 'APIKEY'),
-        filter_input(INPUT_POST, 'APISECRET')
+        filter_input(INPUT_POST, 'APISECRET'),
+        filter_input(INPUT_POST, 'APIKEY')
     );
     printf(
         '<div class="info">Hash: %s</div>',

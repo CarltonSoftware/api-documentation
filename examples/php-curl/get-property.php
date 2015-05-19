@@ -4,7 +4,7 @@
 require_once 'helpers/autoload.php';
 
 // The URI to request
-$uri = 'http://carltonsoftware.apiary.io/';
+$uri = 'http://private-7871e-carltonsoftware.apiary-mock.com/';
 $key = '';
 $secret = '';
 
