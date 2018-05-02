@@ -1,21 +1,17 @@
 <?php
 
-// Load client
-require_once 'helpers/autoload.php';
+include 'create_connection.php';
 
-$uri = 'http://carltonsoftware.apiary.io/';
-$secret = '';
-$key = '';
-$client = \tabs\api\client\ApiClient::factory($uri, $key, $secret);
+$client = \tabs\api\client\ApiClient::getApi();
 
 // Request data
 $data = array(
-    'propertyRef' => 'mousecott',
-    'brandCode' => 'SS',
-    'fromDate' => '2012-07-01',
-    'toDate' => '2012-07-08',
-    'partySize' => 5,
-    'pets' => 2
+    'propertyRef' => '1000',
+    'brandCode' => 'NO',
+    'fromDate' => '2018-10-27',
+    'toDate' => '2018-11-03',
+    'partySize' => 1,
+    'pets' => 0
 );
 
 $response = $client->post(

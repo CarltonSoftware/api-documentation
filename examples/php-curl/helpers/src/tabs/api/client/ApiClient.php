@@ -635,6 +635,36 @@ class ApiClient
      */
     private function _put($urlPath, $params)
     {
+        $this->_setUpPost($urlPath, $params);
+
+        // Set custom header
+        curl_setopt($this->resource, CURLOPT_CUSTOMREQUEST, "PUT");
+    }
+    
+    /**
+     * Handles a post request to the api
+     *
+     * @param string $urlPath The path being requested
+     * @param array  $params  An array of parameters to be sent
+     *
+     * @return string
+     */
+    private function _post($urlPath, $params)
+    {
+        $this->_setUpPost($urlPath, $params);
+        curl_setopt($this->resource, CURLOPT_POST, 1);
+    }
+    
+    /**
+     * Sets up the put or post requests
+     *
+     * @param string $urlPath The path being requested
+     * @param array  $params  An array of parameters to be sent
+     *
+     * @return string
+     */
+    private function _setUpPost($urlPath, $params)
+    {
         // Pop data param into pure json as mock server cannot handle parameter
         // arguments
         if ($this->testMode) {
@@ -644,15 +674,19 @@ class ApiClient
         }
         
         // Add the API key as a query string part
-        if ($params['APIKEY']) {
+        if (isset($params['APIKEY'])) {
             $urlPath .= "?APIKEY=" . $params['APIKEY'];
             unset($params['APIKEY']);
+        
+            // Add the hash as a query string part
+            if (isset($params['hash'])) {
+                $urlPath .= "&hash=" . $params['hash'];
+                unset($params['hash']);
+            }
         }
         
         // Find the curl path to use
         $this->_getResource($urlPath);
-        // Set custom header
-        curl_setopt($this->resource, CURLOPT_CUSTOMREQUEST, "PUT");
         
         // Set the post fields.  Requires the function
         // http_build_query to encode the parameters
@@ -673,21 +707,6 @@ class ApiClient
         
         // Set the content type
         $this->contentType = "application/x-www-form-urlencoded;charset=UTF-8";
-    }
-    
-    /**
-     * Handles a post request to the api
-     *
-     * @param string $urlPath The path being requested
-     * @param array  $params  An array of parameters to be sent
-     *
-     * @return string
-     */
-    private function _post($urlPath, $params)
-    {
-        $this->_put($urlPath, $params);
-        curl_setopt($this->resource, CURLOPT_POST, 1);
-        curl_setopt($this->resource, CURLOPT_CUSTOMREQUEST, "POST");
     }
     
     /**

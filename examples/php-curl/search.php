@@ -1,16 +1,7 @@
 <?php
 
 // Connection details
-define('APIURL', 'http://carltonsoftware.apiary.io');
-define('APIKEY', '');
-define('APISECRET', '');
-
-// Load client
-require_once 'helpers/autoload.php';
-
-// Create a new API singleton.  Client objects can then be created via the
-// static method \tabs\api\client\ApiClient::getApi().
-\tabs\api\client\ApiClient::factory(APIURL, APIKEY, APISECRET);
+include 'create_connection.php';
 
 /**
  * Basic property search request
